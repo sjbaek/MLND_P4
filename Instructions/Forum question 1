@@ -1,0 +1,28 @@
+Before I post this question here, I watched all the lecture twice (except 'more game theory') and wrote down all the notes from the lecture slides with my own writing.
+AND, I have read every single forum posting in this section in search of some kind of solution/advice. 
+
+This is the very first section of 'TO DO' task. Please see my questions below.
+> "Implement the basic driving agent, which processes the following inputs at each time step":
+> 1. Next waypoint location, relative to its current location and heading,
+> 2. Intersection state (traffic light and presence of cars), and,
+> 3. Current deadline value (time steps remaining),
+
+
+> And produces some randome move/action (None, 'forward', 'left', 'right'). Don't try to implement the correct strategy! That's exactly what your agent is supposed to learn.
+
+1. When I ran agent.py as-is, there are four cars showing up on the board and three are moving, but one red car is stuck at its original place and there is a bull's eye at a random location - I think this is the destination? And the red car is our "agent?"
+
+1. "..which processes the following inputs at each time step.." In agent.py, I see three variables _self.next\_waypoint_, _inputs_, _deadline_. 
+ * what does 'process' mean? Does it mean to save these three pre-defined variables into one variable (self.state)? I saw a forum posting to group these variables into a tuple.
+
+1. I understand there are already lots of information floating around (traffic lights, other cars location, deadline and etc.) even before I attempt any of "TO DO" tasks. Which information should I be interested and how should I utilize them?
+
+2. I added a print statement at the end of 'update' function in agent.py: `print "next_waypoint={},inputs={},deadline={}".format(self.next_waypoint,inputs,deadline)`
+ * It looks like next_waypoint is always right and inputs consist of 'light','oncoming','right','left.' What are these? Light where? what is oncoming? and what's right or left?
+
+1. action
+ * Go back to the task language above, "And produces some random move/action (None, 'forward', 'left', 'right'). Don't try to implement the correct strategy!" Does it mean I need to randomly assign any of four action to the variable `action`?
+ * In one of the forum posting, it was suggested to use `action = random.choice([None, 'forward', 'left', 'right'])` I tried this and now the red car is moving, but the directional tag assigned to the red car shows wrong action. The label on the top of the simulator window shows the correct action -- at least matches the movement of the car. Where are the tag and label are updated? Why are they different?
+
+
+This is only a few I can think of now. Maybe I am 100% lost and not understanding any of the implementation part. I understood all the concept from the lecture and was quite successful in quizzes (though they are very trivial).
