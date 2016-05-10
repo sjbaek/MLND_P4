@@ -28,12 +28,15 @@ class LearningAgent(Agent):
         # TODO: Select action according to your policy
         #action = None
         action = random.choice([None, 'forward','left','right'])
+
         # action = self.next_waypoint
 
         # Execute action and get reward
         reward = self.env.act(self, action)
 
         # TODO: Learn policy based on state, action, reward
+        # LearningAgent.update(self)
+
         # print "next_waypoint={},action = {},inputs={}".format(self.next_waypoint, action ,inputs)
         # print "next_waypoint={},A = {}, inputs={},R={}".format(self.next_waypoint, action,inputs ,reward)
         print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
