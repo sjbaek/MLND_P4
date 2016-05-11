@@ -17,29 +17,34 @@ class LearningAgent(Agent):
         # TODO: Prepare for a new trip; reset any variables here, if required
 
     def update(self, t):
+        # ----------------------------- check information from previous time step
+        self.prev_waypoint = self.next_waypoint
+
         # Gather inputs
         self.next_waypoint = self.planner.next_waypoint()  # from route planner, also displayed by simulator
         inputs = self.env.sense(self)
         deadline = self.env.get_deadline(self)
+        
+        #print self.prev_waypoint, self.next_waypoint
 
         # TODO: Update state
-        self.state = (inputs, self.next_waypoint, deadline)
+        # self.state = (inputs['light'], self.next_waypoint, deadline)
 
         # TODO: Select action according to your policy
         
-        # action = random.choice([None, 'forward','left','right'])
+        # action = self.prev_waypoint
+        action = random.choice([None, 'forward','left','right'])
 
-        action = self.next_waypoint
+        # action = self.next_waypoint
 
         # Execute action and get reward
         reward = self.env.act(self, action)
 
         # TODO: Learn policy based on state, action, reward
-        # LearningAgent.update(self)
-
+        
         # print "next_waypoint={},action = {},inputs={}".format(self.next_waypoint, action ,inputs)
         # print "next_waypoint={},A = {}, inputs={},R={}".format(self.next_waypoint, action,inputs ,reward)
-        # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
+        print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
 
 
 def run():
@@ -51,7 +56,7 @@ def run():
     e.set_primary_agent(a, enforce_deadline=False)  # set agent to track
 	
 	# Now simulate it
-    sim = Simulator(e, update_delay=1.0)  # reduce update_delay to speed up simulation
+    sim = Simulator(e, update_delay=0.1)  # reduce update_delay to speed up simulation
     sim.run(n_trials=10)  # press Esc or close pygame window to quit
 
 if __name__ == '__main__':
