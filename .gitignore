@@ -32,7 +32,7 @@ Thumbs.db
 
 # Python #
 ######################
-*.pyc
+smartcab/*.pyc
 
 
 # IPython Notebook
