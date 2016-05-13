@@ -11,6 +11,7 @@ class LearningAgent(Agent):
         self.color = 'red'  # override color
         self.planner = RoutePlanner(self.env, self)  # simple route planner to get next_waypoint
         # TODO: Initialize any additional variables here
+        self.serial = 0
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
@@ -29,6 +30,10 @@ class LearningAgent(Agent):
 
         # TODO: Update state
         self.state = (inputs['light'], self.next_waypoint, deadline)
+        self.serial += 1
+        
+        # To see if serial number continues after the agent reaches destination.
+        print self.serial
 
         # TODO: Select action according to your policy
         
@@ -43,7 +48,7 @@ class LearningAgent(Agent):
         
         # print "next_waypoint={},action = {},inputs={}".format(self.next_waypoint, action ,inputs)
         # print "next_waypoint={},A = {}, inputs={},R={}".format(self.next_waypoint, action,inputs ,reward)
-        print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
+        # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
 
 
 def run():
@@ -55,7 +60,7 @@ def run():
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 	
 	# Now simulate it
-    sim = Simulator(e, update_delay=1.0/1.)  # reduce update_delay to speed up simulation
+    sim = Simulator(e, update_delay=1.0/10.)  # reduce update_delay to speed up simulation
     sim.run(n_trials=10)  # press Esc or close pygame window to quit
 
 if __name__ == '__main__':
