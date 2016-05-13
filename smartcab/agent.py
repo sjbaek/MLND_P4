@@ -11,11 +11,18 @@ class LearningAgent(Agent):
         self.color = 'red'  # override color
         self.planner = RoutePlanner(self.env, self)  # simple route planner to get next_waypoint
         # TODO: Initialize any additional variables here
-        self.serial = 0
+
+        # initialize Q-matrix
+        self.Qmat = {}
+        
+        # This function reaches at the very beginning of the script
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
         # TODO: Prepare for a new trip; reset any variables here, if required
+        self.serial = 0
+        
+        # This function reaches at every start of a new trial
 
     def update(self, t):
         # ----------------------------- check information from previous time step
@@ -36,16 +43,23 @@ class LearningAgent(Agent):
         print self.serial
 
         # TODO: Select action according to your policy
+        if self.state in self.Qmat.keys():
+    	# print self.state, self.Qmat.keys()
+    	    print "found it"
+    	    action = self.next_waypoint
+    	else:
+    		print "not there yet"
+    		action = random.choice([None, 'forward','left','right'])
         
-        # action = self.prev_waypoint
-        action = random.choice([None, 'forward','left','right'])
-        # action = self.next_waypoint
-
         # Execute action and get reward
         reward = self.env.act(self, action)
 
         # TODO: Learn policy based on state, action, reward
-        
+  
+        if self.state not in self.Qmat.keys():# self.next_waypoint is None:
+        	self.Qmat[self.state] = 'dummy'
+ 
+
         # print "next_waypoint={},action = {},inputs={}".format(self.next_waypoint, action ,inputs)
         # print "next_waypoint={},A = {}, inputs={},R={}".format(self.next_waypoint, action,inputs ,reward)
         # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
@@ -57,7 +71,7 @@ def run():
     # Set up environment and agent
     e = Environment()  # create environment (also adds some dummy traffic)
     a = e.create_agent(LearningAgent)  # create agent
-    e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
+    e.set_primary_agent(a, enforce_deadline=False)  # set agent to track
 	
 	# Now simulate it
     sim = Simulator(e, update_delay=1.0/10.)  # reduce update_delay to speed up simulation
