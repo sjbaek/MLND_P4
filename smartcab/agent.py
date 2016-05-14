@@ -16,7 +16,7 @@ class LearningAgent(Agent):
         self.Qmat = {}
         
         # initialize other variables
-        self.gamma = 0.0
+        self.gamma = 0.9
         self.alpha = 0.5
 
         # This function reaches at the very beginning of the script
@@ -95,7 +95,7 @@ def run():
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 	
 	# Now simulate it
-    sim = Simulator(e, update_delay=1.0/10.)  # reduce update_delay to speed up simulation
+    sim = Simulator(e, update_delay=1.0/1.)  # reduce update_delay to speed up simulation
     sim.run(n_trials=10)  # press Esc or close pygame window to quit
 
 if __name__ == '__main__':
