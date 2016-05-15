@@ -67,8 +67,14 @@ class LearningAgent(Agent):
         # TODO: Learn policy based on state, action, reward
 
         # Q(s',a') based on selected action
+
+
+        # New state definition seems incorrect
         # new_state = (inputs['light'],action,deadline-1)
         new_state = (inputs['light'],action)
+        print self.state
+        print new_state
+
         if new_state in self.Qmat.keys():
         	Q_nextT = max(self.Qmat[new_state].values())
         else:
@@ -76,8 +82,8 @@ class LearningAgent(Agent):
         
         Qhat = (1-self.alpha)*self.Qmat[self.state][action] + (self.alpha*(reward+self.gamma*Q_nextT))
         self.Qmat[self.state][action] = Qhat
-        print "Qhat={}, Q_nextT={}, action={}, NWP={}".format(Qhat,Q_nextT,action,self.next_waypoint)
-
+        # print "Qhat={}, Q_nextT={}, action={}, NWP={}".format(Qhat,Q_nextT,action,self.next_waypoint)
+        
         	
  
 
@@ -95,7 +101,7 @@ def run():
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 	
 	# Now simulate it
-    sim = Simulator(e, update_delay=1.0/1.)  # reduce update_delay to speed up simulation
+    sim = Simulator(e, update_delay=1.0/10.)  # reduce update_delay to speed up simulation
     sim.run(n_trials=10)  # press Esc or close pygame window to quit
 
 if __name__ == '__main__':
