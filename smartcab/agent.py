@@ -16,17 +16,17 @@ class LearningAgent(Agent):
         self.Qmat = {}
         
         # initialize other variables
-        self.gamma = 0.9
-        self.alpha = 1.0
+        self.gamma = 0.5
+        self.alpha = 0.5
 
         # This function reaches at the very beginning of the script
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
+        # This function reaches at every start of a new trial
+
         # TODO: Prepare for a new trip; reset any variables here, if required
         self.serial = 0
-        
-        # This function reaches at every start of a new trial
 
     def update(self, t):
         # ----------------------------- check information from previous time step
@@ -45,18 +45,18 @@ class LearningAgent(Agent):
         self.serial += 1
         
         # To see if serial number continues after the agent reaches destination.
-        print self.serial
+        # print self.serial
 
         # TODO: Select action according to your policy
         if self.state in self.Qmat.keys():
-    	    print "-------------------------------------- yes"
+    	    print "-------------------------------------{} found".format(self.state)
     	    action_key_value = self.Qmat[self.state]  # this shows key/value of selected state in Qmat
     	    action = max(action_key_value, key = action_key_value.get) # select action of highest probability
+    	    print "action+key={}".format(action_key_value)
     	    print "learned_action={}".format(action)
     	    # action = self.next_waypoint
     	else:
-    		print "---------------------- no"
-    		#self.Qmat[self.state] = 'dummy'
+    		print "--------------------------------------{} NEW state".format(self.state)
     		self.Qmat[self.state] = {None:0, 'forward':0, 'left':0, 'right':0}
 
     		# random action, when landed on a 'new' state
@@ -74,24 +74,33 @@ class LearningAgent(Agent):
         # New state definition seems incorrect
         # new_state = (inputs['light'],action,deadline-1)
         new_state = (inputs['light'],action)
-        #print self.state
-        #print new_state
-
+        print "state(t+1) =",new_state
         if new_state in self.Qmat.keys():
         	Q_nextT = max(self.Qmat[new_state].values())
+        	print "** Qmat[new_state] ={}".format(self.Qmat[new_state])
         else:
         	Q_nextT = 0.
         
-        Qhat = (1-self.alpha)*self.Qmat[self.state][action] + (self.alpha*(reward+self.gamma*Q_nextT))
+        print "alpha =",self.alpha
+        print "state(t) =",self.state
+        print "Qmat[state] ={}".format(self.Qmat[self.state])
+
+        print "action=",action
+        print "reward=",reward
+        print "gamma =",self.gamma
+        print "Q_nextT=",Q_nextT
+        
+        Qhat = (1.0-self.alpha)*self.Qmat[self.state][action] + (self.alpha*(reward+self.gamma*Q_nextT))
         self.Qmat[self.state][action] = Qhat
-        #print "Qhat={}, Q_nextT={}, action={}, NWP={}".format(Qhat,Q_nextT,action,self.next_waypoint)
+        print "Qhat={}, Q_nextT={}, action={}, NWP={}".format(Qhat,Q_nextT,action,self.next_waypoint)
         
         	
  
 
-        # print "next_waypoint={},action = {},inputs={}".format(self.next_waypoint, action ,inputs)
+        ## print "next_waypoint={},action = {},inputs={}".format(self.next_waypoint, action ,inputs)
         print "next_waypoint={},A = {}, inputs={},R={}".format(self.next_waypoint, action,inputs ,reward)
-        # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
+        ## print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
+        print "--------------------------------------------------------------- end trial"
 
 
 def run():
@@ -104,7 +113,7 @@ def run():
 	
 	# Now simulate it
     sim = Simulator(e, update_delay=1.0/10.)  # reduce update_delay to speed up simulation
-    sim.run(n_trials=10)  # press Esc or close pygame window to quit
+    sim.run(n_trials=100)  # press Esc or close pygame window to quit
 
 if __name__ == '__main__':
     run()
