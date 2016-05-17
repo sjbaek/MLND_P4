@@ -17,7 +17,7 @@ class LearningAgent(Agent):
         
         # initialize other variables
         self.gamma = 0.9
-        self.alpha = 0.5
+        self.alpha = 1.0
 
         # This function reaches at the very beginning of the script
 
@@ -52,6 +52,7 @@ class LearningAgent(Agent):
     	    print "-------------------------------------- yes"
     	    action_key_value = self.Qmat[self.state]  # this shows key/value of selected state in Qmat
     	    action = max(action_key_value, key = action_key_value.get) # select action of highest probability
+    	    print "learned_action={}".format(action)
     	    # action = self.next_waypoint
     	else:
     		print "---------------------- no"
@@ -60,7 +61,8 @@ class LearningAgent(Agent):
 
     		# random action, when landed on a 'new' state
     		action = random.choice([None, 'forward','left','right'])
-        
+
+
         # Execute action and get reward
         reward = self.env.act(self, action)
 
@@ -72,8 +74,8 @@ class LearningAgent(Agent):
         # New state definition seems incorrect
         # new_state = (inputs['light'],action,deadline-1)
         new_state = (inputs['light'],action)
-        print self.state
-        print new_state
+        #print self.state
+        #print new_state
 
         if new_state in self.Qmat.keys():
         	Q_nextT = max(self.Qmat[new_state].values())
@@ -82,13 +84,13 @@ class LearningAgent(Agent):
         
         Qhat = (1-self.alpha)*self.Qmat[self.state][action] + (self.alpha*(reward+self.gamma*Q_nextT))
         self.Qmat[self.state][action] = Qhat
-        # print "Qhat={}, Q_nextT={}, action={}, NWP={}".format(Qhat,Q_nextT,action,self.next_waypoint)
+        #print "Qhat={}, Q_nextT={}, action={}, NWP={}".format(Qhat,Q_nextT,action,self.next_waypoint)
         
         	
  
 
-        #print "next_waypoint={},action = {},inputs={}".format(self.next_waypoint, action ,inputs)
-        # print "next_waypoint={},A = {}, inputs={},R={}".format(self.next_waypoint, action,inputs ,reward)
+        # print "next_waypoint={},action = {},inputs={}".format(self.next_waypoint, action ,inputs)
+        print "next_waypoint={},A = {}, inputs={},R={}".format(self.next_waypoint, action,inputs ,reward)
         # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
 
 
