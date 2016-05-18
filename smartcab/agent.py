@@ -52,6 +52,9 @@ class LearningAgent(Agent):
     	    print "-------------------------------------{} found".format(self.state)
     	    action_key_value = self.Qmat[self.state]  # this shows key/value of selected state in Qmat
     	    action = max(action_key_value, key = action_key_value.get) # select action of highest probability
+            # when multiple maxima exist - choose randomly
+
+            
     	    print "action+key={}".format(action_key_value)
     	    print "learned_action={}".format(action)
     	    # action = self.next_waypoint
