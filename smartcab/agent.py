@@ -16,8 +16,9 @@ class LearningAgent(Agent):
         self.Qmat = {}
         
         # initialize other variables
-        self.gamma = 0.5
-        self.alpha = 0.9
+        self.alpha = 0.5
+        self.gamma = 0.0
+        
 
         # This function reaches at the very beginning of the script
 
@@ -66,14 +67,13 @@ class LearningAgent(Agent):
     	    # print "learned_action={}".format(action)
     	    ## action = self.next_waypoint
     	else:
-    		# print "--------------------------------------{} NEW state".format(self.state)
-    		self.Qmat[self.state] = {None:0, 'forward':0, 'left':0, 'right':0}
-
-    		# random action, when landed on a 'new' state
-    		action = random.choice([None, 'forward','left','right'])
-
-
-        # Execute action and get reward
+		    # print "--------------------------------------{} NEW state".format(self.state)
+			self.Qmat[self.state] = {None:0, 'forward':0, 'left':0, 'right':0}
+			# random action, when landed on a 'new' state
+			action = random.choice([None, 'forward','left','right'])
+			
+			
+		# Execute action and get reward
         reward = self.env.act(self, action)
 
         # TODO: Learn policy based on state, action, reward
@@ -83,7 +83,8 @@ class LearningAgent(Agent):
 
         # New state definition seems incorrect
         # new_state = (inputs['light'],action,deadline-1)
-        new_state = (inputs['light'],action)
+        inputs_new = self.env.sense(self)
+        new_state = (inputs_new['light'], inputs_new['oncoming'], inputs_new['left'],action)
         # print "state(t+1) =",new_state
         if new_state in self.Qmat.keys():
         	Q_nextT = max(self.Qmat[new_state].values())
@@ -109,7 +110,7 @@ class LearningAgent(Agent):
 
         ## print "next_waypoint={},action = {},inputs={}".format(self.next_waypoint, action ,inputs)
         # print "next_waypoint={},A = {}, inputs={},R={}".format(self.next_waypoint, action,inputs ,reward)
-        ## print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
+        # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
         # print "--------------------------------------------------------------- end trial"
 
 
@@ -123,7 +124,7 @@ def run():
 	
 	# Now simulate it
     sim = Simulator(e, update_delay=1.0/10.)  # reduce update_delay to speed up simulation
-    sim.run(n_trials=20)  # press Esc or close pygame window to quit
+    sim.run(n_trials=10)  # press Esc or close pygame window to quit
 
 if __name__ == '__main__':
     run()
