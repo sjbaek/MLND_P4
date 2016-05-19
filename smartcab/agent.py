@@ -82,13 +82,16 @@ class LearningAgent(Agent):
 
 
         # New state definition seems incorrect
-        # new_state = (inputs['light'],action,deadline-1)
+        # FIX: New definition of next state: state and waypoint after action was determined above!
         inputs_new = self.env.sense(self)
-        new_state = (inputs_new['light'], inputs_new['oncoming'], inputs_new['left'],action)
+        #new_state = (inputs_new['light'], inputs_new['oncoming'], inputs_new['left'],action)
+        action_prime = self.planner.next_waypoint()
+
+        new_state = (inputs_new['light'], inputs_new['oncoming'], inputs_new['left'],action_prime)
         # print "state(t+1) =",new_state
         if new_state in self.Qmat.keys():
         	Q_nextT = max(self.Qmat[new_state].values())
-        	print "** Qmat[new_state] ={}".format(self.Qmat[new_state])
+        	# print "** Qmat[new_state] ={}".format(self.Qmat[new_state])
         else:
         	Q_nextT = 0.
         
