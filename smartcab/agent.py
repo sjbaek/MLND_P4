@@ -16,8 +16,8 @@ class LearningAgent(Agent):
         self.Qmat = {}
         
         # initialize other variables
-        self.alpha = 0.1
-        self.gamma = 0.0
+        self.alpha = 0.8
+        self.gamma = 0.2
         
 
         # This function reaches at the very beginning of the script
@@ -55,7 +55,7 @@ class LearningAgent(Agent):
             print "-------------------------------------{} existing".format(self.state)
             action_key_value = self.Qmat[self.state]  # this shows key/value of selected state in Qmat
             # action = max(action_key_value, key = action_key_value.get) # select action of highest probability
-            # print action_key_value
+            print action_key_value
             # when multiple maxima exist - choose randomly
             actions_max = {actions:action_value for actions, action_value \
                         in action_key_value.items() if action_value == max(action_key_value.values())}
