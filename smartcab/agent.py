@@ -47,37 +47,36 @@ class LearningAgent(Agent):
         
         # To see if serial number continues after the agent reaches destination.
         # print self.serial
-        #print self.state
+        print "1. current state is:",self.state
         #print self.Qmat
 
         # TODO: Select action according to your policy
         if self.state in self.Qmat.keys():
-            print "-------------------------------------{} existing".format(self.state)
+            print "   1.a ----------------------------------{} exists".format(self.state)
             action_key_value = self.Qmat[self.state]  # this shows key/value of selected state in Qmat
             # action = max(action_key_value, key = action_key_value.get) # select action of highest probability
-            print action_key_value
+            print "        Q table for this state: ",action_key_value
             # when multiple maxima exist - choose randomly
             actions_max = {actions:action_value for actions, action_value \
                         in action_key_value.items() if action_value == max(action_key_value.values())}
 
             action = random.choice(actions_max.keys())
-            
-            print "action max={}".format(actions_max)
-            print "action    ={}".format(action)
+            #print "action max={}".format(actions_max)
+            #print "action    ={}".format(action)
 
       	    #print "action+key={}".format(action_key_value)
-    	    #print "learned_action={}".format(action)
+    	    print "        learned_action={}".format(action)
     	    ## action = self.next_waypoint
         else:
-            print "--------------------------------------{} NEW state".format(self.state)
-            self.Qmat[self.state] = {None:0, 'forward':0, 'left':0, 'right':0}
+            print "   1.b ----------------------------------{} NEW state".format(self.state)
+            self.Qmat[self.state] = {None:0.0, 'forward':0.0, 'left':0.0, 'right':0.0}
             # random action, when landed on a 'new' state
             action = random.choice([None, 'forward', 'left', 'right'])
             # print "action(random)={}".format(action)
-
+            print "        random action={}".format(action)
 		# Execute action and get reward
         reward = self.env.act(self, action)
-
+        print "   Reward for this action={}".format(reward)
         # TODO: Learn policy based on state, action, reward
 
         # New state definition seems incorrect
@@ -89,22 +88,24 @@ class LearningAgent(Agent):
 
         # new_state = (inputs_new['light'], inputs_new['oncoming'], inputs_new['left'],action_prime)
         new_state = (inputs_new['light'], self.next_waypoint)
-        
+        print "2. next state is:",new_state
+
         if new_state in self.Qmat.keys():
             Q_next = max(self.Qmat[new_state].values())
-            print "new state=", self.Qmat[new_state]
+            print "   2.a ----------------------------------Q table for NEXT state: ",self.Qmat[new_state]
         else:
+            print "   2.a ----------------------------------Q table for NEXT state: NOT FOUND"
             Q_next = 0.
-        print "Q_next=", Q_next
 
-        print "action={},reward = {}".format(action,reward)
-        if action == None:
-            print "BEFORE:action is NONE: state:{}".format(self.state)
-            print self.Qmat[self.state]
-        # Basic Q-learning
+        print "   2.b ----------------------------------Q[new state]=", Q_next
+
+        #print "action={},reward = {}".format(action,reward)
+        #if action == None:
+        #    print "BEFORE:action is NONE: state:{}".format(self.state)
+        #    print self.Qmat[self.state]
+        
         Qhat = (1.0-self.alpha)*self.Qmat[self.state][action] + (self.alpha*(reward+self.gamma*Q_next))
-        Qhat2 = (1.0-self.alpha)*self.Qmat[self.state][action] \
-                                      + (self.alpha*(reward+self.gamma*Q_next))
+        #Qhat2 =(1.0-self.alpha)*self.Qmat[self.state][action] + (self.alpha*(reward+self.gamma*Q_next))
 
         #self.Qmat[self.state][action] = (1.0-self.alpha)*self.Qmat[self.state][action] \
         #                              + (self.alpha*(reward+Q_next))              
@@ -117,15 +118,16 @@ class LearningAgent(Agent):
         # print "next_waypoint={},A = {}, inputs={},R={}".format(self.next_waypoint, action,inputs ,reward)
         # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
         # print self.Qmat
-        if action == None:
-            print "AFTER: action is NONE: state:{}, Qhat={}, Qhat2={}".format(self.state,Qhat,Qhat2)
-            print self.Qmat[self.state]
-        else:
-            print "AFTER: action is else: state:{}, Qhat={}, Qhat2={}".format(self.state,Qhat,Qhat2)
-            print self.Qmat[self.state]
+        #if action == None:
+        #    print "AFTER: action is NONE: state:{}, Qhat={}, Qhat2={}".format(self.state,Qhat,Qhat2)
+        #    print self.Qmat[self.state]
+        #else:
+        #    print "AFTER: action is else: state:{}, Qhat={}, Qhat2={}".format(self.state,Qhat,Qhat2)
+        print "3. CONCLUSION"
+        print "   action is {}, state is {}".format(action,self.state)
+        print "   Q table for (s,a) is: {}".format(self.Qmat[self.state])
 
-        print self.state
-        print new_state
+       
 
         print "--------------------------------------------------------------- end trial"
 
@@ -139,7 +141,7 @@ def run():
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 	
 	# Now simulate it
-    sim = Simulator(e, update_delay=1.0/100.0)  # reduce update_delay to speed up simulation
+    sim = Simulator(e, update_delay=1.0/1.0)  # reduce update_delay to speed up simulation
     sim.run(n_trials=20)  # press Esc or close pygame window to quit
 
 if __name__ == '__main__':
