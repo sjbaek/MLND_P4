@@ -18,7 +18,7 @@ class LearningAgent(Agent):
         # initialize other variables
         self.alpha = 0.8
         self.gamma = 0.2
-        
+        self.epsilon = 0.5
 
         # This function reaches at the very beginning of the script
 
@@ -40,8 +40,8 @@ class LearningAgent(Agent):
         # print "inputs    ={}".format(inputs)
       
         # TODO: Update state
-        #printOK = True
-        printOK = False
+        printOK = True
+        #printOK = False
         ## self.state = (inputs['light'], self.next_waypoint, deadline)
         self.state = (inputs['light'], self.next_waypoint)
         # self.state = (inputs['light'], inputs['oncoming'], inputs['left'], self.next_waypoint)
@@ -63,13 +63,16 @@ class LearningAgent(Agent):
                         in action_key_value.items() if action_value == max(action_key_value.values())}
 
             action = random.choice(actions_max.keys())
-            if printOK: print "     available actions={}".format(actions_max)
+            if printOK: print "      available actions={}".format(actions_max)
             #print "action max={}".format(actions_max)
             #print "action    ={}".format(action)
 
       	    #print "action+key={}".format(action_key_value)
-    	    if printOK: print "        learned_action={}".format(action)
+    	    if printOK: print "         learned_action={}".format(action)
     	    ## action = self.next_waypoint
+            if random.random() < self.epsilon:
+                action = random.choice([None, 'forward', 'left', 'right'])
+                if printOK: print "         learned_action={} (random)".format(action)
         else:
             if printOK: print "   1.b ----------------------------------{} NEW state".format(self.state)
             self.Qmat[self.state] = {None:0.0, 'forward':0.0, 'left':0.0, 'right':0.0}
@@ -107,7 +110,7 @@ class LearningAgent(Agent):
         #    print "BEFORE:action is NONE: state:{}".format(self.state)
         #    print self.Qmat[self.state]
         
-        Qhat = (1.0-self.alpha)*self.Qmat[self.state][action] + (self.alpha*(reward+self.gamma*Q_next))
+        Qhat = (1.0-self.alpha)*self.Qmat[self.state][action] + self.alpha*(reward+self.gamma*Q_next)
         #Qhat2 =(1.0-self.alpha)*self.Qmat[self.state][action] + (self.alpha*(reward+self.gamma*Q_next))
 
         #self.Qmat[self.state][action] = (1.0-self.alpha)*self.Qmat[self.state][action] \
@@ -143,7 +146,7 @@ def run():
 	
 	# Now simulate it
     sim = Simulator(e, update_delay=1.0/100.0)  # reduce update_delay to speed up simulation
-    sim.run(n_trials=20)  # press Esc or close pygame window to quit
+    sim.run(n_trials=10)  # press Esc or close pygame window to quit
 
 if __name__ == '__main__':
     run()
