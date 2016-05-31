@@ -20,14 +20,18 @@ class LearningAgent(Agent):
         self.gamma = 0.2
         self.epsilon = 0.4
 
+        #self.success = 0.
+
         # This function reaches at the very beginning of the script
+
+        # Open a csv file to record the agent's success rate
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
         # This function reaches at every start of a new trial
 
         # TODO: Prepare for a new trip; reset any variables here, if required
-        self.serial = 0
+        #self.serial = 0
 
     def update(self, t):
         # ----------------------------- check information from previous time step
@@ -45,7 +49,7 @@ class LearningAgent(Agent):
         ## self.state = (inputs['light'], self.next_waypoint, deadline)
         self.state = (inputs['light'], self.next_waypoint)
         # self.state = (inputs['light'], inputs['oncoming'], inputs['left'], self.next_waypoint)
-        self.serial += 1
+        #self.serial += 1
         
         # To see if serial number continues after the agent reaches destination.
         # print self.serial
@@ -136,9 +140,10 @@ class LearningAgent(Agent):
         if printOK: print "   action is {}, state is {}".format(action,self.state)
         if printOK: print "   Q table for (s,a) is: {}".format(self.Qmat[self.state])
         
-        if reward > 10:
-            print "************ destination reached *************** "
-        if printOK: print "=========================================================================== end trial"
+        #if reward > 10:
+        #    print "************ destination reached *************** "
+        #    self.success += 1.0
+        #if printOK: print "=========================================================================== end trial"
 
 
 def run():
@@ -150,8 +155,8 @@ def run():
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 	
 	# Now simulate it
-    sim = Simulator(e, update_delay=1.0/100.0)  # reduce update_delay to speed up simulation
-    sim.run(n_trials=30)  # press Esc or close pygame window to quit
-
+    sim = Simulator(e, update_delay=1.0/10000.0)  # reduce update_delay to speed up simulation
+    sim.run(n_trials=100)  # press Esc or close pygame window to quit
+    
 if __name__ == '__main__':
     run()
