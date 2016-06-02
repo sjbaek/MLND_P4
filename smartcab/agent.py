@@ -25,6 +25,9 @@ class LearningAgent(Agent):
         # This function reaches at the very beginning of the script
 
         # Open a csv file to record the agent's success rate
+        with open("SimulationResults.csv","a") as outputFile:
+            #outputFile.write("%s \t %s \t %s \t %s\n" % ("Gamma",self.gamma,"Alpha",self.alpha))
+            outputFile.write("{}\t{}\t{}\t{}\n".format("Gamma",self.gamma,"Alpha",self.alpha))
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
