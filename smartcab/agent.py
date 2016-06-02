@@ -16,8 +16,11 @@ class LearningAgent(Agent):
         self.Qmat = {}
         
         # initialize other variables
+        #self.alpha = 0.8
+        #self.gamma = 0.2
         self.alpha = 0.8
-        self.gamma = 0.2
+        self.gamma = 0.6
+
         self.epsilon = 0.4
 
         #self.success = 0.
