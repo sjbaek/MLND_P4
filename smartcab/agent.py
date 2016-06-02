@@ -16,12 +16,21 @@ class LearningAgent(Agent):
         self.Qmat = {}
         
         # initialize other variables
+        # Basic Q-learning
+        self.alpha = 0.8
+        self.gamma = 0.0
+        self.epsilon = 0.0
+
+
+        # Enhanced Q-learning
+
         #self.alpha = 0.8
         #self.gamma = 0.2
-        self.alpha = 0.8
-        self.gamma = 0.6
+        
+        #self.alpha = 0.8
+        #self.gamma = 0.6
 
-        self.epsilon = 0.4
+        #self.epsilon = 0.4
 
         #self.success = 0.
 
