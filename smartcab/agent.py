@@ -38,7 +38,7 @@ class LearningAgent(Agent):
         # Open a csv file to keep track of the agent's success rate
         with open("SimulationResults.csv","a") as outputFile:
             #outputFile.write("%s \t %s \t %s \t %s\n" % ("Gamma",self.gamma,"Alpha",self.alpha))
-            outputFile.write("{}\t{}\t{}\t{}\n".format("Gamma",self.gamma,"Alpha",self.alpha))
+            outputFile.write("\n{},{},{},{},".format("Gamma",self.gamma,"Alpha",self.alpha))
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
@@ -46,7 +46,9 @@ class LearningAgent(Agent):
 
         # TODO: Prepare for a new trip; reset any variables here, if required
         #self.serial = 0
-
+        #with open("SimulationResults.csv","a") as outputFile:
+        #    #outputFile.write("%s \t %s \t %s \t %s\n" % ("Gamma",self.gamma,"Alpha",self.alpha))
+        #    outputFile.write("\n")
     def update(self, t):
         # ----------------------------- check information from previous time step
         
@@ -149,7 +151,8 @@ def run():
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 	
 	# Now simulate it
-    sim = Simulator(e, update_delay=1.0/10000.0)  # reduce update_delay to speed up simulation
+    #sim = Simulator(e, update_delay=1.0/10000.0)  # reduce update_delay to speed up simulation
+    sim = Simulator(e, update_delay=0.0)  # reduce update_delay to speed up simulation
     sim.run(n_trials=100)  # press Esc or close pygame window to quit
     
 if __name__ == '__main__':

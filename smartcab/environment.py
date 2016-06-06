@@ -118,7 +118,7 @@ class Environment(object):
                 self.done = True
                 print "Environment.reset(): Primary agent could not reach destination within deadline!"
                 with open("SimulationResults.csv","a") as outputFile:
-                    outputFile.write("0\n")
+                    outputFile.write("0,")
                     #outputFile.write(" FAIL \n")
             self.agent_states[self.primary_agent]['deadline'] -= 1
 
@@ -197,7 +197,7 @@ class Environment(object):
                 print "Environment.act(): Primary agent has reached destination!"  # [debug]
                 with open("SimulationResults.csv","a") as outputFile:
                     #outputFile.write(" Success: \n")
-                    outputFile.write("1\n")
+                    outputFile.write("1,")
             self.status_text = "state: {}\naction: {}\nreward: {}".format(agent.get_state(), action, reward)
             #print "Environment.act() [POST]: location: {}, heading: {}, action: {}, reward: {}".format(location, heading, action, reward)  # [debug]
 
