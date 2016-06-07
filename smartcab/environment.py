@@ -117,7 +117,7 @@ class Environment(object):
             if self.enforce_deadline and self.agent_states[self.primary_agent]['deadline'] <= 0:
                 self.done = True
                 print "Environment.reset(): Primary agent could not reach destination within deadline!"
-                with open("SimulationResults.csv","a") as outputFile:
+                with open("SimulationResults_Enhanced.csv","a") as outputFile:
                     outputFile.write("0,")
                     #outputFile.write(" FAIL \n")
             self.agent_states[self.primary_agent]['deadline'] -= 1
@@ -195,7 +195,7 @@ class Environment(object):
                     reward += 10  # bonus
                 self.done = True
                 print "Environment.act(): Primary agent has reached destination!"  # [debug]
-                with open("SimulationResults.csv","a") as outputFile:
+                with open("SimulationResults_Enhanced.csv","a") as outputFile:
                     #outputFile.write(" Success: \n")
                     outputFile.write("1,")
             self.status_text = "state: {}\naction: {}\nreward: {}".format(agent.get_state(), action, reward)

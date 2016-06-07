@@ -11,33 +11,33 @@ class LearningAgent(Agent):
         self.color = 'red'  # override color
         self.planner = RoutePlanner(self.env, self)  # simple route planner to get next_waypoint
         # TODO: Initialize any additional variables here
+        self.serial = 0
 
         # initialize Q-matrix
         self.Qmat = {}
         
         # initialize other variables
         # Basic Q-learning
-        self.alpha = 0.8
-        self.gamma = 0.0
-        self.epsilon = 0.0
+        #self.alpha = 0.8
+        #self.gamma = 0.0
+        #self.epsilon = 0.0
 
 
         # Enhanced Q-learning
 
-        #self.alpha = 0.8
-        #self.gamma = 0.2
+        self.alpha = 0.8
+        self.gamma = 0.2
         
         #self.alpha = 0.8
         #self.gamma = 0.6
 
-        #self.epsilon = 0.4
+        self.epsilon = 1.0
         #self.success = 0.
 
         # This function reaches at the very beginning of the script
 
         # Open a csv file to keep track of the agent's success rate
-        with open("SimulationResults.csv","a") as outputFile:
-            #outputFile.write("%s \t %s \t %s \t %s\n" % ("Gamma",self.gamma,"Alpha",self.alpha))
+        with open("SimulationResults_Enhanced.csv","a") as outputFile:
             outputFile.write("\n{},{},{},{},".format("Gamma",self.gamma,"Alpha",self.alpha))
 
     def reset(self, destination=None):
@@ -46,6 +46,7 @@ class LearningAgent(Agent):
 
         # TODO: Prepare for a new trip; reset any variables here, if required
         #self.serial = 0
+        self.serial += 1
         #with open("SimulationResults.csv","a") as outputFile:
         #    #outputFile.write("%s \t %s \t %s \t %s\n" % ("Gamma",self.gamma,"Alpha",self.alpha))
         #    outputFile.write("\n")
@@ -63,13 +64,13 @@ class LearningAgent(Agent):
         printOK = False
 
         self.state = (inputs['light'], self.next_waypoint)
-        #self.serial += 1
+        
         
         if printOK: print "1. current state is:",self.state
 
         # TODO: Select action according to your policy
 
-        epsilon = self.epsilon
+        epsilon = (self.epsilon/(self.epsilon+self.serial))
 
         if self.state in self.Qmat.keys():
             if printOK: print "   1.a ----------------------------------{} exists".format(self.state)
@@ -140,7 +141,7 @@ class LearningAgent(Agent):
         if printOK: print "3. CONCLUSION"
         if printOK: print "   action is {}, state is {}".format(action,self.state)
         if printOK: print "   Q table for (s,a) is: {}".format(self.Qmat[self.state])
-        
+        #print "serial={}".format(self.serial)
 
 def run():
     """Run the agent for a finite number of trials."""
