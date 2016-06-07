@@ -25,9 +25,12 @@ class LearningAgent(Agent):
 
         # Enhanced Q-learning
 
-        self.alpha = 0.8
-        self.gamma = 0.5
-        
+        #self.alpha = 0.8
+        self.alpha = 0.4
+        #self.gamma = 1.0
+        #self.gamma = 0.5
+        self.gamma = 0.2
+
         self.epsilon = 1.0
         #self.success = 0.
 
@@ -45,9 +48,7 @@ class LearningAgent(Agent):
         # TODO: Prepare for a new trip; reset any variables here, if required
         #self.serial = 0
         self.serial += 1
-        #with open("SimulationResults.csv","a") as outputFile:
-        #    #outputFile.write("%s \t %s \t %s \t %s\n" % ("Gamma",self.gamma,"Alpha",self.alpha))
-        #    outputFile.write("\n")
+        
     def update(self, t):
         # ----------------------------- check information from previous time step
         
@@ -119,19 +120,7 @@ class LearningAgent(Agent):
 
         if printOK: print "   2.b -----------------------------Q[new state]=", Q_next
 
-        #print "action={},reward = {}".format(action,reward)
-        #if action == None:
-        #    print "BEFORE:action is NONE: state:{}".format(self.state)
-        #    print self.Qmat[self.state]
-        
         Qhat = (1.0-self.alpha)*self.Qmat[self.state][action] + self.alpha*(reward+self.gamma*Q_next)
-        #Qhat2 =(1.0-self.alpha)*self.Qmat[self.state][action] + (self.alpha*(reward+self.gamma*Q_next))
-
-        #self.Qmat[self.state][action] = (1.0-self.alpha)*self.Qmat[self.state][action] \
-        #                              + (self.alpha*(reward+Q_next))              
-        # Enhanced Q-learning
-        #self.Qmat[self.state][action] = (1.0-self.alpha)*self.Qmat[self.state][action] \
-        #                              + (self.alpha*(reward+self.gamma*Q_next))
         
         self.Qmat[self.state][action] = Qhat
         # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
@@ -139,8 +128,7 @@ class LearningAgent(Agent):
         if printOK: print "3. CONCLUSION"
         if printOK: print "   action is {}, state is {}".format(action,self.state)
         if printOK: print "   Q table for (s,a) is: {}".format(self.Qmat[self.state])
-        #print "serial={}".format(self.serial)
-
+        
 def run():
     """Run the agent for a finite number of trials."""
 
