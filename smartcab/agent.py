@@ -19,18 +19,15 @@ class LearningAgent(Agent):
         # initialize other variables
         # Basic Q-learning
         #self.alpha = 0.8
-        #self.gamma = 0.0
+        #self.gamma = 0.5
         #self.epsilon = 0.0
 
 
         # Enhanced Q-learning
 
         self.alpha = 0.8
-        self.gamma = 0.2
+        self.gamma = 0.5
         
-        #self.alpha = 0.8
-        #self.gamma = 0.6
-
         self.epsilon = 1.0
         #self.success = 0.
 
@@ -38,6 +35,7 @@ class LearningAgent(Agent):
 
         # Open a csv file to keep track of the agent's success rate
         with open("SimulationResults_Enhanced.csv","a") as outputFile:
+        #with open("SimulationResults.csv","a") as outputFile:
             outputFile.write("\n{},{},{},{},".format("Gamma",self.gamma,"Alpha",self.alpha))
 
     def reset(self, destination=None):
